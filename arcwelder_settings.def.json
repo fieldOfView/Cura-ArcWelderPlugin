@@ -1,0 +1,48 @@
+{
+    "arcwelder_enable":
+    {
+        "label": "Arc Welder",
+        "description": "Convert multiple G0/G1 arc segments into G2/G3 arc commands using Arc Welder.",
+        "type": "bool",
+        "default_value": false,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false
+    },
+    "arcwelder_maximum_radius":
+    {
+        "label": "Maximum Arc Radius",
+        "description": "The maximum radius of any arc in mm.",
+        "unit": "mm",
+        "type": "float",
+        "default_value": 1000000,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
+    },
+    "arcwelder_tolerance":
+    {
+        "label": "Tolerance",
+        "description": "This is the maximum allowable difference between the arc path and the original toolpath.",
+        "unit": "%",
+        "type": "float",
+        "default_value": 1,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
+    },
+    "arcwelder_resolution":
+    {
+        "label": "Resolution",
+        "description": "The resolution in mm of the of the output.  Determines the maximum tool path deviation allowed during conversion.",
+        "unit": "mm",
+        "type": "float",
+        "default_value": 0.05,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
+    }
+}
