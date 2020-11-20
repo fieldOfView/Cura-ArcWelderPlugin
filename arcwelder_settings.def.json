@@ -12,7 +12,7 @@
     "arcwelder_maximum_radius":
     {
         "label": "Maximum Arc Radius",
-        "description": "The maximum radius of any arc in mm.",
+        "description": "The maximum radius of any arc in mm for Arc Welder.",
         "unit": "mm",
         "type": "float",
         "default_value": 1000000,
@@ -24,7 +24,7 @@
     "arcwelder_tolerance":
     {
         "label": "Tolerance",
-        "description": "This is the maximum allowable difference between the arc path and the original toolpath.",
+        "description": "The maximum allowable difference between the arc path and the original toolpath for Arc Welder.",
         "unit": "%",
         "type": "float",
         "default_value": 1,
@@ -36,7 +36,7 @@
     "arcwelder_resolution":
     {
         "label": "Resolution",
-        "description": "The resolution in mm of the of the output.  Determines the maximum tool path deviation allowed during conversion.",
+        "description": "The resolution in mm of the of the output for Arc Welder.  Determines the maximum tool path deviation allowed during conversion.",
         "unit": "mm",
         "type": "float",
         "default_value": 0.05,
