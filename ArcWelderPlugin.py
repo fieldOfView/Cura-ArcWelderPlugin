@@ -2,6 +2,7 @@
 # The ArcWelderPlugin for Cura is released under the terms of the AGPLv3 or higher.
 
 from collections import OrderedDict
+import json
 import tempfile
 import os
 import subprocess
@@ -12,6 +13,7 @@ from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
+from UM.Platform import Platform
 
 class ArcWelderPlugin(Extension):
     def __init__(self):
@@ -28,7 +30,7 @@ class ArcWelderPlugin(Extension):
         settings_definition_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "arcwelder_settings.def.json")
         try:
             with open(settings_definition_path, "r", encoding = "utf-8") as f:
-                self._settings_dict = json.load(f, object_pairs_hook = collections.OrderedDict)
+                self._settings_dict = json.load(f, object_pairs_hook = OrderedDict)
         except:
             Logger.logException("e", "Could not load arc welder settings definition")
             return
@@ -109,11 +111,11 @@ class ArcWelderPlugin(Extension):
         elif Platform.isOSX():
             arcwelder_executable = "bin/osx/ArcWelder"
 
-        arcwelder_path = os.path.join(os.path.dirname(os.path.abspath(__file__), arcwelder_executable))
+        arcwelder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), arcwelder_executable)
 
-        maximum_radius = global_container_stack.getProperty("arcwelder_maximum_radius")
-        tolerance = global_container_stack.getProperty("arcwelder_tolerance") / 100
-        resolution = global_container_stack.getProperty("arcwelder_resolution")
+        maximum_radius = global_container_stack.getProperty("arcwelder_maximum_radius", "value")
+        tolerance = global_container_stack.getProperty("arcwelder_tolerance", "value") / 100
+        resolution = global_container_stack.getProperty("arcwelder_resolution", "value")
 
         gcode_dict = getattr(scene, "gcode_dict", {})
         if not gcode_dict: # this also checks for an empty dict
@@ -134,9 +136,9 @@ class ArcWelderPlugin(Extension):
 
                 file_descriptor, path = tempfile.mkstemp()
                 with os.fdopen(file_descriptor, 'w') as temporary_file:
-                    temporary_file.write(layer)
+                    temporary_file.write(joined_gcode)
 
-                subprocess.run([arcwelder_path, "-m=%f" % maximum_radius, "-t=%f" + tolerance, "-r=%f" + resolution, path])
+                subprocess.run([arcwelder_path, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution, path])
 
                 with open(path, "r") as temporary_file:
                     result_gcode = temporary_file.read()
