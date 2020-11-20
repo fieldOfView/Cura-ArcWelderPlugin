@@ -23,10 +23,6 @@ class ArcWelderPlugin(Extension):
 
         self._i18n_catalog = None
 
-        ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
-
-        self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
-
         settings_definition_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "arcwelder_settings.def.json")
         try:
             with open(settings_definition_path, "r", encoding = "utf-8") as f:
