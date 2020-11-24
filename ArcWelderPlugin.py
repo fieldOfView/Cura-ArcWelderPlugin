@@ -101,7 +101,7 @@ class ArcWelderPlugin(Extension):
             return
 
         if Platform.isWindows():
-            arcwelder_executable = "bin/win64/ArcWelderConsole.exe"
+            arcwelder_executable = "bin/win64/ArcWelder.exe"
         elif Platform.isLinux():
             arcwelder_executable = "bin/linux/ArcWelder"
         elif Platform.isOSX():
