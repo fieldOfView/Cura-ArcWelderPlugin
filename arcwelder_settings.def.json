@@ -28,6 +28,8 @@
         "unit": "%",
         "type": "float",
         "default_value": 1,
+        "minimum_value": 0,
+        "maximum_value": 100,		
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
@@ -40,6 +42,8 @@
         "unit": "mm",
         "type": "float",
         "default_value": 0.05,
+        "minimum_value": 0.025,
+        "maximum_value": 0.075,	   		
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
@@ -51,6 +55,7 @@
         "description": "The minimum number of segments in a full circle of the same radius as any given arc.  Can only be used if Mm per arc segment is also set. Used to compensate for firmware without min-arc-segments setting.",
         "type": "int",
         "default_value": 12,
+		"minimum_value": 0,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
@@ -63,10 +68,11 @@
         "unit": "mm",
         "type": "float",
         "default_value": 1.0,
+		"minimum_value": 0,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
-        "enabled": "arcwelder_enable"
+        "enabled": "arcwelder_min_arc_segment>0"
     },
 	"arcwelder_allow_3d_arcs":
     {
