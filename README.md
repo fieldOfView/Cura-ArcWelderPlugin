@@ -4,4 +4,5 @@ This plugin wraps [ArcWelderLib](https://github.com/FormerLurker/ArcWelderLib) b
 
 Inspired by on a postprocessing script by [yysh12](https://github.com/yysh12)
 
-For further informatio about ArcWelder antistutter, see https://plugins.octoprint.org/plugins/arc_welder
+For further informations about ArcWelder antistutter, see https://plugins.octoprint.org/plugins/arc_welder
+For further informations about MM Per Arc Segment and Min Arc Segments options, see https://github.com/FormerLurker/ArcWelderPlugin/issues/80
