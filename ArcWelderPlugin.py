@@ -1,5 +1,6 @@
 # Copyright (c) 2020 Aldo Hoeben / fieldOfView
 # The ArcWelderPlugin for Cura is released under the terms of the AGPLv3 or higher.
+# 25/11/2020 add options arcwelder_min_arc_segment / arcwelder_mm_per_arc_segment / arcwelder_allow_3d_arcs
 
 from collections import OrderedDict
 import json
@@ -142,14 +143,11 @@ class ArcWelderPlugin(Extension):
                 with os.fdopen(file_descriptor, 'w') as temporary_file:
                     temporary_file.write(joined_gcode)
 
-                Logger.log("d", "Process.run %s , %s, %s, %s, %s, %s, %s, %s", arcwelder_path, cmd_3d_arcs, "-m=%f" % maximum_radius, "-a=%d" % min_arc, "-s=%f" % mm_par_arc, "-t=%f" % tolerance, "-r=%f" % resolution, path)
-                #subprocess.run([arcwelder_path, cmd_3d_arcs, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
+                # Logger.log("d", "Process.run %s , %s, %s, %s, %s, %s, %s, %s", arcwelder_path, cmd_3d_arcs, "-m=%f" % maximum_radius, "-a=%d" % min_arc, "-s=%f" % mm_par_arc, "-t=%f" % tolerance, "-r=%f" % resolution, path)
                 subprocess.run([arcwelder_path, "%s"%cmd_3d_arcs, "-s=%f" % mm_par_arc, "-a=%d" % min_arc, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
-                # subprocess.run([arcwelder_path, "-m=%f" % maximum_radius, "-a=%d" % min_arc, "-s=%f" % mm_par_arc, "-t=%f" % tolerance, cmd_3d_arcs, "-r=%f" % resolution, path])
-
+                
                 with open(path, "r") as temporary_file:
                     result_gcode = temporary_file.read()
-                # Logger.log("d", "Path = %s", path)
                 os.remove(path)
 
                 gcode_list = result_gcode.split(layer_separator)
