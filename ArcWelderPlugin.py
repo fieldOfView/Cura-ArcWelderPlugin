@@ -115,7 +115,7 @@ class ArcWelderPlugin(Extension):
         tolerance = global_container_stack.getProperty("arcwelder_tolerance", "value") / 100
         resolution = global_container_stack.getProperty("arcwelder_resolution", "value")
         min_arc_segment = int(global_container_stack.getProperty("arcwelder_min_arc_segment", "value"))
-        mm_per_arc = global_container_stack.getProperty("arcwelder_mm_per_arc_segment", "value")
+        mm_per_arc_segment = global_container_stack.getProperty("arcwelder_mm_per_arc_segment", "value")
 
         
         
@@ -148,7 +148,7 @@ class ArcWelderPlugin(Extension):
 
                 # Logger.log("d", "Process.run %s , %s, %s, %s, %s, %s, %s, %s", arcwelder_path, cmd_3d_arcs, "-m=%f" % maximum_radius, "-a=%d" % min_arc, "-s=%f" % mm_par_arc, "-t=%f" % tolerance, "-r=%f" % resolution, path)
                 if min_arc_segment>0 :
-                    subprocess.run([arcwelder_path, "%s"%cmd_3d_arcs, "-s=%f" % mm_per_arc, "-a=%d" % min_arc_segment, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
+                    subprocess.run([arcwelder_path, "%s"%cmd_3d_arcs, "-s=%f" % mm_per_arc_segment, "-a=%d" % min_arc_segment, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
                 else:
                     subprocess.run([arcwelder_path, "%s"%cmd_3d_arcs, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])                   
                     
