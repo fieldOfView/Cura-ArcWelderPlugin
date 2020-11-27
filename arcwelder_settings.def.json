@@ -44,5 +44,39 @@
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
         "enabled": "arcwelder_enable"
+    },
+    "arcwelder_min_arc_segment":
+    {
+        "label": "Min arc segment",
+        "description": "The minimum number of segments in a full circle of the same radius as any given arc.  Can only be used if Mm per arc segment is also set. Used to compensate for firmware without min-arc-segments setting.",
+        "type": "int",
+        "default_value": 12,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
+    },
+    "arcwelder_mm_per_arc_segment":
+    {
+        "label": "Mm per arc segment",
+        "description": "The mm per arc segment as defined in your firmware. Used to compensate for firmware without min-arc-segments setting. Requires  that min-arc-segments be set.",
+        "unit": "mm",
+        "type": "float",
+        "default_value": 1.0,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
+    },
+	"arcwelder_allow_3d_arcs":
+    {
+        "label": "Allow 3d arcs",
+        "description": "3D arcs will be allowed (supports spiral vase mode). Not all firmware supports this.",
+        "type": "bool",
+        "default_value": false,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
     }
 }
