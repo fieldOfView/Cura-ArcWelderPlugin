@@ -35,7 +35,6 @@ class ArcWelderPlugin(Extension):
 
         ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
         self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
-
        
     def _onContainerLoadComplete(self, container_id: str) -> None:
         if not ContainerRegistry.getInstance().isLoaded(container_id):
