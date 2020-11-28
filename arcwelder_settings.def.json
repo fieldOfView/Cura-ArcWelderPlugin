@@ -72,7 +72,7 @@
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
-        "enabled": "arcwelder_min_arc_segment>0"
+        "enabled": "arcwelder_enable and arcwelder_min_arc_segment>0"
     },
 	"arcwelder_allow_3d_arcs":
     {
