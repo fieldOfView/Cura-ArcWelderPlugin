@@ -36,6 +36,7 @@ class ArcWelderPlugin(Extension):
         ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
         self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
 
+       
     def _onContainerLoadComplete(self, container_id: str) -> None:
         if not ContainerRegistry.getInstance().isLoaded(container_id):
             # skip containers that could not be loaded, or subsequent findContainers() will cause an infinite loop
@@ -96,7 +97,7 @@ class ArcWelderPlugin(Extension):
         global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             return
-
+           
         # get setting from Cura
         arcwelder_enable = global_container_stack.getProperty("arcwelder_enable", "value")
         if not arcwelder_enable:
@@ -118,6 +119,10 @@ class ArcWelderPlugin(Extension):
         mm_per_arc_segment = global_container_stack.getProperty("arcwelder_mm_per_arc_segment", "value")
         allow_3d_arcs = global_container_stack.getProperty("arcwelder_allow_3d_arcs", "value")
 
+
+        # If the scene does not have a gcode, do nothing
+        if not hasattr(scene, "gcode_dict"):
+            return 
         gcode_dict = getattr(scene, "gcode_dict", {})
         if not gcode_dict: # this also checks for an empty dict
             Logger.log("w", "Scene has no gcode to process")
