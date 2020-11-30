@@ -2,7 +2,7 @@
     "arcwelder_enable":
     {
         "label": "Arc Welder",
-        "description": "Convert multiple G0/G1 arc segments into G2/G3 arc commands using Arc Welder.",
+        "description": "Convert multiple G0/G1 arc segments into G2/G3 arc movements.",
         "type": "bool",
         "default_value": false,
         "settable_per_mesh": false,
@@ -12,7 +12,7 @@
     "arcwelder_maximum_radius":
     {
         "label": "Maximum Arc Radius",
-        "description": "The maximum radius of any arc in mm for Arc Welder.",
+        "description": "The maximum radius of any arc in mm.",
         "unit": "mm",
         "type": "float",
         "default_value": 1000000,
@@ -24,12 +24,12 @@
     "arcwelder_tolerance":
     {
         "label": "Tolerance",
-        "description": "The maximum allowable difference between the arc path and the original toolpath for Arc Welder.",
+        "description": "The maximum allowable difference between the arc path and the original toolpath in the conversion of linear to arc moves.",
         "unit": "%",
         "type": "float",
         "default_value": 1,
         "minimum_value": 0,
-        "maximum_value": 100,		
+        "maximum_value": 100,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
@@ -38,12 +38,12 @@
     "arcwelder_resolution":
     {
         "label": "Resolution",
-        "description": "The resolution in mm of the of the output for Arc Welder.  Determines the maximum tool path deviation allowed during conversion.",
+        "description": "The resolution in mm of the of the output.  Determines the maximum tool path deviation allowed in the conversion of linear to arc moves.",
         "unit": "mm",
         "type": "float",
         "default_value": 0.05,
         "minimum_value": 0.025,
-        "maximum_value": 0.075,	   		
+        "maximum_value": 0.075,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
@@ -52,10 +52,10 @@
     "arcwelder_min_arc_segment":
     {
         "label": "Min arc segments",
-        "description": "The minimum number of segments in a full circle of the same radius as any given arc.  Can only be used if Mm per arc segment is also set. Used to compensate for firmware without min-arc-segments setting.",
+        "description": "The minimum number of segments in a full circle of the same radius as any given arc. Used to compensate for firmware without min-arc-segments setting.",
         "type": "int",
         "default_value": 12,
-		"minimum_value": 0,
+        "minimum_value": 0,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
@@ -64,17 +64,17 @@
     "arcwelder_mm_per_arc_segment":
     {
         "label": "Mm per arc segment",
-        "description": "The mm per arc segment as defined in your firmware. Used to compensate for firmware without min-arc-segments setting. Requires  that min-arc-segments be set.",
+        "description": "The mm per arc segment as defined in your firmware. Used to compensate for firmware without min-arc-segments setting. Requires that min-arc-segments be set.",
         "unit": "mm",
         "type": "float",
         "default_value": 1.0,
-		"minimum_value": 0,
+        "minimum_value": 0,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
-        "enabled": "arcwelder_enable and arcwelder_min_arc_segment>0"
+        "enabled": "arcwelder_enable and arcwelder_min_arc_segment > 0"
     },
-	"arcwelder_allow_3d_arcs":
+    "arcwelder_allow_3d_arcs":
     {
         "label": "Allow 3d arcs",
         "description": "3D arcs will be allowed (supports spiral vase mode). Not all firmware supports this.",
@@ -83,6 +83,6 @@
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
-        "enabled": "arcwelder_enable"
+        "enabled": "arcwelder_enable and magic_spiralize"
     }
 }
