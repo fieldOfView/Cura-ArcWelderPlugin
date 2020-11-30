@@ -84,5 +84,16 @@
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
         "enabled": "arcwelder_enable and magic_spiralize"
+    },
+    "arcwelder_g90_influences_extruder":
+    {
+        "label": "G90 influences extruder",
+        "description": "G90/G91 influences the extruder axis mode. Marlin 2.0 and forks should have this box checked.  Many forks of Marlin 1.x should have this unchecked, like the Prusa MK2 and MK3.",
+        "type": "bool",
+        "default_value": false,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
     }
 }

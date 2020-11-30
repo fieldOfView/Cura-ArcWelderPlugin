@@ -110,11 +110,12 @@ class ArcWelderPlugin(Extension):
         arcwelder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), arcwelder_executable)
 
         maximum_radius = global_container_stack.getProperty("arcwelder_maximum_radius", "value")
-        tolerance = global_container_stack.getProperty("arcwelder_tolerance", "value") / 100
+        path_tolerance = global_container_stack.getProperty("arcwelder_tolerance", "value") / 100
         resolution = global_container_stack.getProperty("arcwelder_resolution", "value")
         min_arc_segment = int(global_container_stack.getProperty("arcwelder_min_arc_segment", "value"))
         mm_per_arc_segment = global_container_stack.getProperty("arcwelder_mm_per_arc_segment", "value")
         allow_3d_arcs = global_container_stack.getProperty("arcwelder_allow_3d_arcs", "value")
+        g90_influences_extruder = global_container_stack.getProperty("arcwelder_g90_influences_extruder", "value")
 
         # If the scene does not have a gcode, do nothing
         if not hasattr(scene, "gcode_dict"):
@@ -144,7 +145,7 @@ class ArcWelderPlugin(Extension):
                 command_arguments = [
                     arcwelder_path,
                     "-m=%f" % maximum_radius,
-                    "-t=%f" % tolerance,
+                    "-t=%f" % path_tolerance,
                     "-r=%f" % resolution,
                 ]
 
@@ -156,6 +157,9 @@ class ArcWelderPlugin(Extension):
 
                 if allow_3d_arcs :
                     command_arguments.append("-z")
+
+                if g90_influences_extruder:
+                    command_arguments.append("-g")
 
                 command_arguments.append(path)
                 subprocess.run(command_arguments)
