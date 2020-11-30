@@ -51,7 +51,7 @@
     },
     "arcwelder_min_arc_segment":
     {
-        "label": "Min arc segments",
+        "label": "Minimum arc segments",
         "description": "The minimum number of segments in a full circle of the same radius as any given arc. Used to compensate for firmware without min-arc-segments setting.",
         "type": "int",
         "default_value": 12,
@@ -64,7 +64,7 @@
     "arcwelder_mm_per_arc_segment":
     {
         "label": "Mm per arc segment",
-        "description": "The mm per arc segment as defined in your firmware. Used to compensate for firmware without min-arc-segments setting. Requires that min-arc-segments be set.",
+        "description": "The mm per arc segment as defined in your firmware. Used to compensate for firmware without mini-arc-segments setting.",
         "unit": "mm",
         "type": "float",
         "default_value": 1.0,
@@ -77,7 +77,7 @@
     "arcwelder_allow_3d_arcs":
     {
         "label": "Allow 3d arcs",
-        "description": "3D arcs will be allowed (supports spiral vase mode). Not all firmware supports this.",
+        "description": "Allow 3d arcs, supporting Spiralize Outer Contour (vase mode). Not all firmware supports this.",
         "type": "bool",
         "default_value": false,
         "settable_per_mesh": false,
@@ -88,7 +88,7 @@
     "arcwelder_g90_influences_extruder":
     {
         "label": "G90 influences extruder",
-        "description": "G90/G91 influences the extruder axis mode. Marlin 2.0 and forks should have this box checked.  Many forks of Marlin 1.x should have this unchecked, like the Prusa MK2 and MK3.",
+        "description": "G90/G91 influences the extruder axis mode in the conversion of linear to arc moves. Marlin 2.0 and forks should have this box checked.  Many forks of Marlin 1.x should have this unchecked, like the Prusa MK2 and MK3.",
         "type": "bool",
         "default_value": false,
         "settable_per_mesh": false,
