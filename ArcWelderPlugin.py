@@ -35,7 +35,8 @@ class ArcWelderPlugin(Extension):
 
         ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
         self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
-       
+
+
     def _onContainerLoadComplete(self, container_id: str) -> None:
         if not ContainerRegistry.getInstance().isLoaded(container_id):
             # skip containers that could not be loaded, or subsequent findContainers() will cause an infinite loop
@@ -129,46 +130,42 @@ class ArcWelderPlugin(Extension):
 
         dict_changed = False
 
-        # get gcode list for the active build plate
-        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
-        gcode_list = gcode_dict[active_build_plate_id]
-        if not gcode_list:
-            return
-            
-        if len(gcode_list) < 2:
-            Logger.log("w", "Plate %s does not contain any layers", plate_id)
-            return
+        for plate_id in gcode_dict:
+            gcode_list = gcode_dict[plate_id]
+            if len(gcode_list) < 2:
+                Logger.log("w", "Plate %s does not contain any layers", plate_id)
+                continue
 
-        if ";ARCWELDERPROCESSED\n" not in gcode_list[0]:
-            layer_separator = ";ARCWELDERPLUGIN_GCODELIST_SEPARATOR\n"
-            joined_gcode = layer_separator.join(gcode_list)
+            if ";ARCWELDERPROCESSED\n" not in gcode_list[0]:
+                layer_separator = ";ARCWELDERPLUGIN_GCODELIST_SEPARATOR\n"
+                joined_gcode = layer_separator.join(gcode_list)
 
-            file_descriptor, path = tempfile.mkstemp()
-            with os.fdopen(file_descriptor, 'w') as temporary_file:
-                temporary_file.write(joined_gcode)
+                file_descriptor, path = tempfile.mkstemp()
+                with os.fdopen(file_descriptor, 'w') as temporary_file:
+                    temporary_file.write(joined_gcode)
 
-            if min_arc_segment>0 :
-                if allow_3d_arcs :
-                    subprocess.run([arcwelder_path, "-z", "-s=%f" % mm_per_arc_segment, "-a=%d" % min_arc_segment, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
+                if min_arc_segment>0 :
+                    if allow_3d_arcs :
+                        subprocess.run([arcwelder_path, "-z", "-s=%f" % mm_per_arc_segment, "-a=%d" % min_arc_segment, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
+                    else:
+                        subprocess.run([arcwelder_path, "-s=%f" % mm_per_arc_segment, "-a=%d" % min_arc_segment, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
                 else:
-                    subprocess.run([arcwelder_path, "-s=%f" % mm_per_arc_segment, "-a=%d" % min_arc_segment, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
+                    if allow_3d_arcs :
+                        subprocess.run([arcwelder_path, "-z", "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])     
+                    else:
+                        subprocess.run([arcwelder_path, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
+                    
+                with open(path, "r") as temporary_file:
+                    result_gcode = temporary_file.read()
+                os.remove(path)
+
+                gcode_list = result_gcode.split(layer_separator)
+                gcode_list[0] += ";ARCWELDERPROCESSED\n"
+                gcode_dict[plate_id] = gcode_list
+                dict_changed = True
             else:
-                if allow_3d_arcs :
-                    subprocess.run([arcwelder_path, "-z", "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])     
-                else:
-                    subprocess.run([arcwelder_path, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
-                
-            with open(path, "r") as temporary_file:
-                result_gcode = temporary_file.read()
-            os.remove(path)
-
-            gcode_list = result_gcode.split(layer_separator)
-            gcode_list[0] += ";ARCWELDERPROCESSED\n"
-            gcode_dict[active_build_plate_id] = gcode_list
-            dict_changed = True
-        else:
-            Logger.log("d", "Plate %s has already been processed", active_build_plate_id)
-            return
+                Logger.log("d", "Plate %s has already been processed", plate_id)
+                continue
 
         if dict_changed:
             setattr(scene, "gcode_dict", gcode_dict)
