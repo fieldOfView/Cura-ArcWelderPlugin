@@ -1,7 +1,5 @@
 # Copyright (c) 2020 Aldo Hoeben / fieldOfView
 # The ArcWelderPlugin for Cura is released under the terms of the AGPLv3 or higher.
-# 25/11/2020 add options arcwelder_min_arc_segment / arcwelder_mm_per_arc_segment / arcwelder_allow_3d_arcs
-# 26/11/2020 change paramter : options min_arc_segment / mm_per_arc
 
 from collections import OrderedDict
 import json
@@ -97,8 +95,7 @@ class ArcWelderPlugin(Extension):
         global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             return
-           
-        # get setting from Cura
+
         arcwelder_enable = global_container_stack.getProperty("arcwelder_enable", "value")
         if not arcwelder_enable:
             return
@@ -119,10 +116,10 @@ class ArcWelderPlugin(Extension):
         mm_per_arc_segment = global_container_stack.getProperty("arcwelder_mm_per_arc_segment", "value")
         allow_3d_arcs = global_container_stack.getProperty("arcwelder_allow_3d_arcs", "value")
 
-
         # If the scene does not have a gcode, do nothing
         if not hasattr(scene, "gcode_dict"):
-            return 
+            return
+
         gcode_dict = getattr(scene, "gcode_dict", {})
         if not gcode_dict: # this also checks for an empty dict
             Logger.log("w", "Scene has no gcode to process")
@@ -144,17 +141,25 @@ class ArcWelderPlugin(Extension):
                 with os.fdopen(file_descriptor, 'w') as temporary_file:
                     temporary_file.write(joined_gcode)
 
+                command_arguments = [
+                    arcwelder_path,
+                    "-m=%f" % maximum_radius,
+                    "-t=%f" % tolerance,
+                    "-r=%f" % resolution,
+                ]
+
                 if min_arc_segment>0 :
-                    if allow_3d_arcs :
-                        subprocess.run([arcwelder_path, "-z", "-s=%f" % mm_per_arc_segment, "-a=%d" % min_arc_segment, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
-                    else:
-                        subprocess.run([arcwelder_path, "-s=%f" % mm_per_arc_segment, "-a=%d" % min_arc_segment, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
-                else:
-                    if allow_3d_arcs :
-                        subprocess.run([arcwelder_path, "-z", "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])     
-                    else:
-                        subprocess.run([arcwelder_path, "-m=%f" % maximum_radius, "-t=%f" % tolerance, "-r=%f" % resolution , path])
-                    
+                    command_arguments.extend([
+                        "-s=%f" % mm_per_arc_segment,
+                        "-a=%d" % min_arc_segment
+                    ])
+
+                if allow_3d_arcs :
+                    command_arguments.append("-z")
+
+                command_arguments.append(path)
+                subprocess.run(command_arguments)
+
                 with open(path, "r") as temporary_file:
                     result_gcode = temporary_file.read()
                 os.remove(path)
