@@ -7,6 +7,7 @@ import tempfile
 import os
 import stat
 import subprocess
+import re
 
 from UM.Extension import Extension
 from UM.Application import Application
@@ -45,6 +46,12 @@ class ArcWelderPlugin(Extension):
         except:
             Logger.logException("e", "Could modify rights of ArcWelder executable")
             return
+        version_output = subprocess.check_output([self._arcwelder_path, "--version"]).decode()
+        match = re.search("version: (.*)", version_output)
+        if match:
+            Logger.log("d", "Using ArcWelder %s" % match.group(1))
+        else:
+            Logger.log("w", "Could not determine ArcWelder version")
 
         ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
         self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
