@@ -5,7 +5,9 @@ from collections import OrderedDict
 import json
 import tempfile
 import os
+import stat
 import subprocess
+import re
 
 from UM.Extension import Extension
 from UM.Application import Application
@@ -30,6 +32,26 @@ class ArcWelderPlugin(Extension):
         except:
             Logger.logException("e", "Could not load arc welder settings definition")
             return
+
+        if Platform.isWindows():
+            arcwelder_executable = "bin/win64/ArcWelder.exe"
+        elif Platform.isLinux():
+            arcwelder_executable = "bin/linux/ArcWelder"
+        elif Platform.isOSX():
+            arcwelder_executable = "bin/osx/ArcWelder"
+
+        self._arcwelder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), arcwelder_executable)
+        try:
+            os.chmod(self._arcwelder_path, stat.S_IXUSR | stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH | stat.S_IWUSR)  # Make sure we have the rights to run this.
+        except:
+            Logger.logException("e", "Could modify rights of ArcWelder executable")
+            return
+        version_output = subprocess.check_output([self._arcwelder_path, "--version"]).decode()
+        match = re.search("version: (.*)", version_output)
+        if match:
+            Logger.log("d", "Using ArcWelder %s" % match.group(1))
+        else:
+            Logger.log("w", "Could not determine ArcWelder version")
 
         ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
         self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
@@ -100,15 +122,6 @@ class ArcWelderPlugin(Extension):
         if not arcwelder_enable:
             return
 
-        if Platform.isWindows():
-            arcwelder_executable = "bin/win64/ArcWelder.exe"
-        elif Platform.isLinux():
-            arcwelder_executable = "bin/linux/ArcWelder"
-        elif Platform.isOSX():
-            arcwelder_executable = "bin/osx/ArcWelder"
-
-        arcwelder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), arcwelder_executable)
-
         maximum_radius = global_container_stack.getProperty("arcwelder_maximum_radius", "value")
         path_tolerance = global_container_stack.getProperty("arcwelder_tolerance", "value") / 100
         resolution = global_container_stack.getProperty("arcwelder_resolution", "value")
@@ -143,7 +156,7 @@ class ArcWelderPlugin(Extension):
                     temporary_file.write(joined_gcode)
 
                 command_arguments = [
-                    arcwelder_path,
+                    self._arcwelder_path,
                     "-m=%f" % maximum_radius,
                     "-t=%f" % path_tolerance,
                     "-r=%f" % resolution,
