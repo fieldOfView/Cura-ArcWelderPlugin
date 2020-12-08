@@ -17,6 +17,8 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
 from UM.Platform import Platform
 
+from typing import Dict, List, Any
+
 class ArcWelderPlugin(Extension):
     def __init__(self):
         super().__init__()
@@ -52,6 +54,8 @@ class ArcWelderPlugin(Extension):
             Logger.log("d", "Using ArcWelder %s" % match.group(1))
         else:
             Logger.log("w", "Could not determine ArcWelder version")
+
+        self._application.getPreferences().addPreference("arcwelderplugin/settings_made_visible", False)
 
         ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
         self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
@@ -97,6 +101,23 @@ class ArcWelderPlugin(Extension):
             self._expanded_categories = []  # type: List[str]
             container._updateRelations(setting_definition)
 
+        preferences = self._application.getPreferences()
+        if not preferences.getValue("arcwelderplugin/settings_made_visible"):
+            setting_keys = self._getAllSettingKeys(self._settings_dict)
+
+            visible_settings = preferences.getValue("general/visible_settings")
+            visible_settings_changed = False
+            for key in setting_keys:
+                if key not in visible_settings:
+                    visible_settings += ";%s" % key
+                    visible_settings_changed = True
+
+            if visible_settings_changed:
+                preferences.setValue("general/visible_settings", visible_settings)
+
+            preferences.setValue("arcwelderplugin/settings_made_visible", True)
+
+
     def _updateAddedChildren(self, container: DefinitionContainer, setting_definition: SettingDefinition) -> None:
         children = setting_definition.children
         if not children or not setting_definition.parent:
@@ -109,6 +130,15 @@ class ArcWelderPlugin(Extension):
         for child in children:
             container._definition_cache[child.key] = child
             self._updateAddedChildren(container, child)
+
+
+    def _getAllSettingKeys(self, definition: Dict[str, Any]) -> List[str]:
+        children = []
+        for key in definition:
+            children.append(key)
+            if "children" in definition[key]:
+                children.extend(self._getAllSettingKeys(definition[key]))
+        return children
 
 
     def _filterGcode(self, output_device):
