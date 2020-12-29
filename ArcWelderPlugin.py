@@ -182,7 +182,7 @@ class ArcWelderPlugin(Extension):
                 joined_gcode = layer_separator.join(gcode_list)
 
                 file_descriptor, path = tempfile.mkstemp()
-                with os.fdopen(file_descriptor, 'w') as temporary_file:
+                with os.fdopen(file_descriptor, 'w', encoding = "utf-8") as temporary_file:
                     temporary_file.write(joined_gcode)
 
                 command_arguments = [
@@ -207,7 +207,7 @@ class ArcWelderPlugin(Extension):
                 command_arguments.append(path)
                 subprocess.run(command_arguments)
 
-                with open(path, "r") as temporary_file:
+                with open(path, "r", encoding = "utf-8") as temporary_file:
                     result_gcode = temporary_file.read()
                 os.remove(path)
 
