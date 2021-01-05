@@ -98,7 +98,7 @@ class ArcWelderPlugin(Extension):
             self._expanded_categories = self._application.expandedCategories.copy()
             self._updateAddedChildren(container, setting_definition)
             self._application.setExpandedCategories(self._expanded_categories)
-            self._expanded_categories = []  # type: List[str]
+            self._expanded_categories.clear()
             container._updateRelations(setting_definition)
 
         preferences = self._application.getPreferences()
