@@ -150,6 +150,7 @@ class ArcWelderPlugin(Extension):
 
         arcwelder_enable = global_container_stack.getProperty("arcwelder_enable", "value")
         if not arcwelder_enable:
+            Logger.log("d", "ArcWelder is not enabled")
             return
 
         maximum_radius = global_container_stack.getProperty("arcwelder_maximum_radius", "value")
@@ -161,9 +162,6 @@ class ArcWelderPlugin(Extension):
         g90_influences_extruder = global_container_stack.getProperty("arcwelder_g90_influences_extruder", "value")
 
         # If the scene does not have a gcode, do nothing
-        if not hasattr(scene, "gcode_dict"):
-            return
-
         gcode_dict = getattr(scene, "gcode_dict", {})
         if not gcode_dict: # this also checks for an empty dict
             Logger.log("w", "Scene has no gcode to process")
@@ -171,53 +169,60 @@ class ArcWelderPlugin(Extension):
 
         dict_changed = False
 
+        layer_separator = ";ARCWELDERPLUGIN_GCODELIST_SEPARATOR\n"
+        processed_marker = ";ARCWELDERPROCESSED\n"
+
         for plate_id in gcode_dict:
             gcode_list = gcode_dict[plate_id]
             if len(gcode_list) < 2:
                 Logger.log("w", "Plate %s does not contain any layers", plate_id)
                 continue
 
-            if ";ARCWELDERPROCESSED\n" not in gcode_list[0]:
-                layer_separator = ";ARCWELDERPLUGIN_GCODELIST_SEPARATOR\n"
-                joined_gcode = layer_separator.join(gcode_list)
-
-                file_descriptor, path = tempfile.mkstemp()
-                with os.fdopen(file_descriptor, 'w', encoding = "utf-8") as temporary_file:
-                    temporary_file.write(joined_gcode)
-
-                command_arguments = [
-                    self._arcwelder_path,
-                    "-m=%f" % maximum_radius,
-                    "-t=%f" % path_tolerance,
-                    "-r=%f" % resolution,
-                ]
-
-                if min_arc_segment>0 :
-                    command_arguments.extend([
-                        "-s=%f" % mm_per_arc_segment,
-                        "-a=%d" % min_arc_segment
-                    ])
-
-                if allow_3d_arcs :
-                    command_arguments.append("-z")
-
-                if g90_influences_extruder:
-                    command_arguments.append("-g")
-
-                command_arguments.append(path)
-                subprocess.run(command_arguments)
-
-                with open(path, "r", encoding = "utf-8") as temporary_file:
-                    result_gcode = temporary_file.read()
-                os.remove(path)
-
-                gcode_list = result_gcode.split(layer_separator)
-                gcode_list[0] += ";ARCWELDERPROCESSED\n"
-                gcode_dict[plate_id] = gcode_list
-                dict_changed = True
-            else:
+            if processed_marker in gcode_list[0]:
                 Logger.log("d", "Plate %s has already been processed", plate_id)
                 continue
+
+            joined_gcode = layer_separator.join(gcode_list)
+
+            file_descriptor, temporary_path = tempfile.mkstemp()
+            Logger.log("d", "Using temporary file %s", temporary_path)
+
+            with os.fdopen(file_descriptor, 'w', encoding = "utf-8") as temporary_file:
+                temporary_file.write(joined_gcode)
+
+            command_arguments = [
+                self._arcwelder_path,
+                "-m=%f" % maximum_radius,
+                "-t=%f" % path_tolerance,
+                "-r=%f" % resolution,
+            ]
+
+            if min_arc_segment>0 :
+                command_arguments.extend([
+                    "-s=%f" % mm_per_arc_segment,
+                    "-a=%d" % min_arc_segment
+                ])
+
+            if allow_3d_arcs :
+                command_arguments.append("-z")
+
+            if g90_influences_extruder:
+                command_arguments.append("-g")
+
+            command_arguments.append(temporary_path)
+
+            Logger.log("d", "Running ArcWelder with the following options: %s" % command_arguments)
+            process_output = subprocess.check_output(command_arguments).decode()
+            Logger.log("d", process_output)
+
+            with open(temporary_path, "r", encoding = "utf-8") as temporary_file:
+                result_gcode = temporary_file.read()
+            os.remove(temporary_path)
+
+            gcode_list = result_gcode.split(layer_separator)
+            gcode_list[0] += processed_marker
+            gcode_dict[plate_id] = gcode_list
+            dict_changed = True
 
         if dict_changed:
             setattr(scene, "gcode_dict", gcode_dict)
