@@ -182,6 +182,11 @@ class ArcWelderPlugin(Extension):
                 Logger.log("d", "Plate %s has already been processed", plate_id)
                 continue
 
+            if len(gcode_list) > 0:
+                # remove header from gcode, so we can put it back in front after processing
+                header = gcode_list.pop(0)
+            else:
+                header = ""
             joined_gcode = layer_separator.join(gcode_list)
 
             file_descriptor, temporary_path = tempfile.mkstemp()
@@ -220,6 +225,8 @@ class ArcWelderPlugin(Extension):
             os.remove(temporary_path)
 
             gcode_list = result_gcode.split(layer_separator)
+            if header != "":
+                gcode_list.insert(0, header) # add header back in front
             gcode_list[0] += processed_marker
             gcode_dict[plate_id] = gcode_list
             dict_changed = True
