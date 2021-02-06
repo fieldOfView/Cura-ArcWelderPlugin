@@ -7,6 +7,7 @@ import tempfile
 import os
 import stat
 import subprocess
+import locale
 import re
 
 from UM.Extension import Extension
@@ -48,7 +49,7 @@ class ArcWelderPlugin(Extension):
         except:
             Logger.logException("e", "Could modify rights of ArcWelder executable")
             return
-        version_output = subprocess.check_output([self._arcwelder_path, "--version"]).decode()
+        version_output = subprocess.check_output([self._arcwelder_path, "--version"]).decode(locale.getpreferredencoding())
         match = re.search("version: (.*)", version_output)
         if match:
             Logger.log("d", "Using ArcWelder %s" % match.group(1))
@@ -217,7 +218,7 @@ class ArcWelderPlugin(Extension):
             command_arguments.append(temporary_path)
 
             Logger.log("d", "Running ArcWelder with the following options: %s" % command_arguments)
-            process_output = subprocess.check_output(command_arguments).decode()
+            process_output = subprocess.check_output(command_arguments).decode(locale.getpreferredencoding())
             Logger.log("d", process_output)
 
             with open(temporary_path, "r", encoding = "utf-8") as temporary_file:
