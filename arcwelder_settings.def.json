@@ -49,30 +49,44 @@
         "settable_per_meshgroup": false,
         "enabled": "arcwelder_enable"
     },
-    "arcwelder_min_arc_segment":
+    "arcwelder_firmware_compensation":
     {
-        "label": "Minimum arc segments",
-        "description": "The minimum number of segments in a full circle of the same radius as any given arc. Used to compensate for firmware without min-arc-segments setting.",
-        "type": "int",
-        "default_value": 12,
-        "minimum_value": 0,
+        "label": "Firmware compensation",
+        "description": "Some firmware does not handle arcs with a small radius (under approximately 5mm depending on your settings), which will appear flat instead of curved. If larger arcs appear flat, it's likely that G2/G3 is disabled. This applies to Marlin 1.x (but NOT Marlin 2), Klipper (can be fixed by changing settings), and a few others. If you notice small radius arcs that print with a flat edge, you may need to enable firmware compensation. Note that compression may be reduced (perhaps drastically) when firmware compensation is enabled.",
+        "type": "bool",
+        "default_value": false,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
-        "enabled": "arcwelder_enable"
-    },
-    "arcwelder_mm_per_arc_segment":
-    {
-        "label": "Mm per arc segment",
-        "description": "The mm per arc segment as defined in your firmware. Used to compensate for firmware without mini-arc-segments setting.",
-        "unit": "mm",
-        "type": "float",
-        "default_value": 1.0,
-        "minimum_value": 0,
-        "settable_per_mesh": false,
-        "settable_per_extruder": false,
-        "settable_per_meshgroup": false,
-        "enabled": "arcwelder_enable and arcwelder_min_arc_segment > 0"
+        "enabled": "arcwelder_enable",
+        "children":
+        {
+            "arcwelder_min_arc_segment":
+            {
+                "label": "Minimum arc segments",
+                "description": "The minimum number of segments in a full circle of the same radius as any given arc. Used to compensate for firmware without min-arc-segments setting.",
+                "type": "int",
+                "default_value": 12,
+                "minimum_value": 0,
+                "settable_per_mesh": false,
+                "settable_per_extruder": false,
+                "settable_per_meshgroup": false,
+                "enabled": "arcwelder_enable and arcwelder_firmware_compensation"
+            },
+            "arcwelder_mm_per_arc_segment":
+            {
+                "label": "Mm per arc segment",
+                "description": "The mm per arc segment as defined in your firmware. Used to compensate for firmware without mini-arc-segments setting.",
+                "unit": "mm",
+                "type": "float",
+                "default_value": 1.0,
+                "minimum_value": 0,
+                "settable_per_mesh": false,
+                "settable_per_extruder": false,
+                "settable_per_meshgroup": false,
+                "enabled": "arcwelder_enable and arcwelder_firmware_compensation"
+            }
+        }
     },
     "arcwelder_allow_3d_arcs":
     {

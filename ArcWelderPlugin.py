@@ -157,6 +157,7 @@ class ArcWelderPlugin(Extension):
         maximum_radius = global_container_stack.getProperty("arcwelder_maximum_radius", "value")
         path_tolerance = global_container_stack.getProperty("arcwelder_tolerance", "value") / 100
         resolution = global_container_stack.getProperty("arcwelder_resolution", "value")
+        firmware_compensation = global_container_stack.getProperty("arcwelder_firmware_compensation", "value")
         min_arc_segment = int(global_container_stack.getProperty("arcwelder_min_arc_segment", "value"))
         mm_per_arc_segment = global_container_stack.getProperty("arcwelder_mm_per_arc_segment", "value")
         allow_3d_arcs = global_container_stack.getProperty("arcwelder_allow_3d_arcs", "value")
@@ -203,13 +204,13 @@ class ArcWelderPlugin(Extension):
                 "-r=%f" % resolution,
             ]
 
-            if min_arc_segment>0 :
+            if firmware_compensation:
                 command_arguments.extend([
                     "-s=%f" % mm_per_arc_segment,
                     "-a=%d" % min_arc_segment
                 ])
 
-            if allow_3d_arcs :
+            if allow_3d_arcs:
                 command_arguments.append("-z")
 
             if g90_influences_extruder:
