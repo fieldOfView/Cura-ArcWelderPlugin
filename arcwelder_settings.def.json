@@ -23,11 +23,11 @@
     },
     "arcwelder_tolerance":
     {
-        "label": "Tolerance",
+        "label": "Path tolerance",
         "description": "The maximum allowable difference between the arc path and the original toolpath in the conversion of linear to arc moves.",
         "unit": "%",
         "type": "float",
-        "default_value": 1,
+        "default_value": 5,
         "minimum_value": 0,
         "maximum_value": 100,
         "settable_per_mesh": false,
@@ -37,7 +37,7 @@
     },
     "arcwelder_resolution":
     {
-        "label": "Resolution",
+        "label": "Resolution (Maximum path deviation)",
         "description": "The resolution in mm of the of the output.  Determines the maximum tool path deviation allowed in the conversion of linear to arc moves.",
         "unit": "mm",
         "type": "float",
