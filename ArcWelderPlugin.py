@@ -142,7 +142,7 @@ class ArcWelderPlugin(Extension):
         for key in definition:
             children.append(key)
             if "children" in definition[key]:
-                children.extend(self._getAllSettingKeys(definition[key]))
+                children.extend(self._getAllSettingKeys(definition[key]["children"]))
         return children
 
 
