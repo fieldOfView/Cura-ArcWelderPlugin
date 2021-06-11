@@ -7,5 +7,6 @@ from . import ArcWelderPlugin
 def getMetaData():
     return {}
 
+
 def register(app):
     return {"extension": ArcWelderPlugin.ArcWelderPlugin()}
