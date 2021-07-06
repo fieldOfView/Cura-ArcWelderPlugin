@@ -49,21 +49,25 @@ class ArcWelderPlugin(Extension):
         self._arcwelder_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), arcwelder_executable
         )
-        try:
-            os.chmod(
-                self._arcwelder_path,
-                stat.S_IXUSR
-                | stat.S_IRUSR
-                | stat.S_IRGRP
-                | stat.S_IROTH
-                | stat.S_IWUSR,
-            )  # Make sure we have the rights to run this.
-        except:
-            Logger.logException("e", "Could modify rights of ArcWelder executable")
-            return
+        if not Platform.isWindows():
+            try:
+                os.chmod(
+                    self._arcwelder_path,
+                    stat.S_IXUSR
+                    | stat.S_IRUSR
+                    | stat.S_IRGRP
+                    | stat.S_IROTH
+                    | stat.S_IWUSR,
+                )  # Make sure we have the rights to run this.
+            except:
+                Logger.logException("e", "Could modify rights of ArcWelder executable")
+                return
 
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        if Platform.isWindows():
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        else:
+            startupinfo = None
         version_output = subprocess.check_output(
             [self._arcwelder_path, "--version"], startupinfo=startupinfo
         ).decode(locale.getpreferredencoding())
@@ -264,8 +268,11 @@ class ArcWelderPlugin(Extension):
                 "Running ArcWelder with the following options: %s" % command_arguments,
             )
 
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            if Platform.isWindows:
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            else:
+                startupinfo = None
             process_output = subprocess.check_output(
                 command_arguments, startupinfo=startupinfo
             ).decode(locale.getpreferredencoding())
