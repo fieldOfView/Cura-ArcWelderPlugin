@@ -70,6 +70,45 @@
         "settable_per_meshgroup": false,
         "enabled": "arcwelder_enable and magic_spiralize"
     },
+    "arcwelder_allow_dynamic_precision":
+    {
+        "label": "Allow Dynamic Precision",
+        "description": "Allow the precision to grow as ArcWelder encounters gcodes with higher precision. This may increase gcode size somewhat, depending on the precision of the gcode commands in your file.",
+        "type": "bool",
+        "default_value": false,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
+    },
+    "arcwelder_default_xyz_precision":
+    {
+        "label": "Default XYZ Precision",
+        "description": "The number of decimal places of coordinates of arc segments in the X, Y and Z axes. When combined with the 'Allow Dynamic Precision' setting, this represents the minimum precision.",
+        "type": "int",
+        "default_value": 3,
+        "minimum_value": 0,
+        "minimum_value_warning": 2,
+        "maximum_value_warning": 6,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
+    },
+    "arcwelder_default_e_precision":
+    {
+        "label": "Default E Precision",
+        "description": "The number of decimal places of coordinates of arc segments in the E axis. When combined with the 'Allow Dynamic Precision' setting, this represents the minimum precision.",
+        "type": "int",
+        "default_value": 3,
+        "minimum_value": 0,
+        "minimum_value_warning": 2,
+        "maximum_value_warning": 6,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
+    },
     "arcwelder_firmware_compensation":
     {
         "label": "Firmware Compensation",

@@ -205,6 +205,17 @@ class ArcWelderPlugin(Extension):
         allow_3d_arcs = global_container_stack.getProperty(
             "arcwelder_allow_3d_arcs", "value"
         )
+        allow_dynamic_precision = global_container_stack.getProperty(
+            "arcwelder_allow_dynamic_precision", "value"
+        )
+        default_xyz_precision = int(
+            global_container_stack.getProperty(
+                "arcwelder_default_xyz_precision", "value"
+            )
+        )
+        default_e_precision = int(
+            global_container_stack.getProperty("arcwelder_default_e_precision", "value")
+        )
         g90_influences_extruder = global_container_stack.getProperty(
             "arcwelder_g90_influences_extruder", "value"
         )
@@ -248,6 +259,8 @@ class ArcWelderPlugin(Extension):
                 "-m=%f" % maximum_radius,
                 "-t=%f" % path_tolerance,
                 "-r=%f" % resolution,
+                "-x=%d" % default_xyz_precision,
+                "-e=%d" % default_e_precision,
             ]
 
             if firmware_compensation:
@@ -257,6 +270,9 @@ class ArcWelderPlugin(Extension):
 
             if allow_3d_arcs:
                 command_arguments.append("-z")
+
+            if allow_dynamic_precision:
+                command_arguments.append("-d")
 
             if g90_influences_extruder:
                 command_arguments.append("-g")
