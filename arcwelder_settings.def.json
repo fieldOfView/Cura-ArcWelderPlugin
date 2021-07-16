@@ -93,21 +93,21 @@
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
-        "enabled": "arcwelder_enable"
+        "enabled": "arcwelder_enable and False"
     },
     "arcwelder_default_e_precision":
     {
         "label": "Default E Precision",
         "description": "The number of decimal places of coordinates of arc segments in the E axis. When combined with the 'Allow Dynamic Precision' setting, this represents the minimum precision.",
         "type": "int",
-        "default_value": 3,
+        "default_value": 5,
         "minimum_value": 0,
         "minimum_value_warning": 2,
         "maximum_value_warning": 6,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
-        "enabled": "arcwelder_enable"
+        "enabled": "arcwelder_enable and False"
     },
     "arcwelder_firmware_compensation":
     {

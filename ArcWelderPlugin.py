@@ -258,9 +258,9 @@ class ArcWelderPlugin(Extension):
                 self._arcwelder_path,
                 "-m=%f" % maximum_radius,
                 "-t=%f" % path_tolerance,
-                "-r=%f" % resolution,
-                "-x=%d" % default_xyz_precision,
-                "-e=%d" % default_e_precision,
+                "-r=%f" % resolution
+                #"-x=%d" % default_xyz_precision,
+                #"-e=%d" % default_e_precision,
             ]
 
             if firmware_compensation:

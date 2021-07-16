@@ -4,7 +4,7 @@ This plugin wraps [ArcWelderLib](https://github.com/FormerLurker/ArcWelderLib) b
 
 Inspired by on a postprocessing script by [yysh12](https://github.com/yysh12)
 
-For further informations about ArcWelder antistutter, see https://plugins.octoprint.org/plugins/arc_welder
+For further information about ArcWelder antistutter, see https://plugins.octoprint.org/plugins/arc_welder
 
 ## Arcwelder Settings
 
@@ -38,16 +38,6 @@ This option allows G2/G3 commands to be generated when using vase mode.  This is
 Not all gcode has the same precision for X, Y, and Z parameters.  Enabling this option will cause the precision to grow as ArcWelder encounters gcodes with higher precision.  This may increase gcode size somewhat, depending on the precision of the gcode commands in your file.
 
 **Important Note**: This option used to be the default, but in some cases I've seen files with unusually high precision.  If it gets too high, the resulting gcode may overrun the gcode buffer size, causing prints to fail.  For that reason, this option has been disabled by default.  I've only seen a few cases where this happens, and it's always been due to custom start/end gcode with extremely high precision.
-
-### Default XYZ Precision
-ArcWelder outputs fixed precision for X, Y, Z, I, and J parameters.  99% of the time the default of 3 decimal places is just fine.  If you need (want) more or less precision, you can alter this value.  In general, I do not recommend a value below 3 or above 5.
-
-Note that when combined with the 'Allow Dynamic Precision' setting, this represents the minimum precision.  It will grow if Arc Welder encounters gcode commands with a higher precision.
-
-### Default E Precision
-Arc Welder outputs fixed precision for the E parameter (extruder travel).  99% of the time the default of 5 decimal places is what you want.  If you need (want) more or less precision, you can alter this value.  In general, I do not recommend a value below 3 or above 5.
-
-Note, that when combined with the 'Allow Dynamic Precision' setting, this represents the minimum precision.  It will grow if Arc Welder encounters gcode commands with a higher precision.
 
 ### Firmware Compensation
 **Important**: Do **NOT** enable firmware compensation unless you are sure you need it!  Print quality and compression will suffer if it is enabled needlessly.
