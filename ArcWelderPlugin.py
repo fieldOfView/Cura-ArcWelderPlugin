@@ -268,7 +268,7 @@ class ArcWelderPlugin(Extension):
                 "Running ArcWelder with the following options: %s" % command_arguments,
             )
 
-            if Platform.isWindows:
+            if Platform.isWindows():
                 startupinfo = subprocess.STARTUPINFO()
                 startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             else:
