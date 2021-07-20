@@ -20,6 +20,7 @@ from UM.Platform import Platform
 
 from typing import Dict, List, Any
 
+
 class ArcWelderPlugin(Extension):
     def __init__(self):
         super().__init__()
@@ -28,10 +29,12 @@ class ArcWelderPlugin(Extension):
 
         self._i18n_catalog = None
 
-        settings_definition_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "arcwelder_settings.def.json")
+        settings_definition_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "arcwelder_settings.def.json"
+        )
         try:
-            with open(settings_definition_path, "r", encoding = "utf-8") as f:
-                self._settings_dict = json.load(f, object_pairs_hook = OrderedDict)
+            with open(settings_definition_path, "r", encoding="utf-8") as f:
+                self._settings_dict = json.load(f, object_pairs_hook=OrderedDict)
         except:
             Logger.logException("e", "Could not load arc welder settings definition")
             return
@@ -43,24 +46,48 @@ class ArcWelderPlugin(Extension):
         elif Platform.isOSX():
             arcwelder_executable = "bin/osx/ArcWelder"
 
-        self._arcwelder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), arcwelder_executable)
-        try:
-            os.chmod(self._arcwelder_path, stat.S_IXUSR | stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH | stat.S_IWUSR)  # Make sure we have the rights to run this.
-        except:
-            Logger.logException("e", "Could modify rights of ArcWelder executable")
-            return
-        version_output = subprocess.check_output([self._arcwelder_path, "--version"]).decode(locale.getpreferredencoding())
+        self._arcwelder_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), arcwelder_executable
+        )
+        if not Platform.isWindows():
+            try:
+                os.chmod(
+                    self._arcwelder_path,
+                    stat.S_IXUSR
+                    | stat.S_IRUSR
+                    | stat.S_IRGRP
+                    | stat.S_IROTH
+                    | stat.S_IWUSR,
+                )  # Make sure we have the rights to run this.
+            except:
+                Logger.logException("e", "Could modify rights of ArcWelder executable")
+                return
+
+        if Platform.isWindows():
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        else:
+            startupinfo = None
+        version_output = subprocess.check_output(
+            [self._arcwelder_path, "--version"], startupinfo=startupinfo
+        ).decode(locale.getpreferredencoding())
+
         match = re.search("version: (.*)", version_output)
         if match:
             Logger.log("d", "Using ArcWelder %s" % match.group(1))
         else:
             Logger.log("w", "Could not determine ArcWelder version")
 
-        self._application.getPreferences().addPreference("arcwelderplugin/settings_made_visible", False)
+        self._application.getPreferences().addPreference(
+            "arcwelderplugin/settings_made_visible", False
+        )
 
-        ContainerRegistry.getInstance().containerLoadComplete.connect(self._onContainerLoadComplete)
-        self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
-
+        ContainerRegistry.getInstance().containerLoadComplete.connect(
+            self._onContainerLoadComplete
+        )
+        self._application.getOutputDeviceManager().writeStarted.connect(
+            self._filterGcode
+        )
 
     def _onContainerLoadComplete(self, container_id: str) -> None:
         if not ContainerRegistry.getInstance().isLoaded(container_id):
@@ -68,7 +95,9 @@ class ArcWelderPlugin(Extension):
             return
 
         try:
-            container = ContainerRegistry.getInstance().findContainers(id = container_id)[0]
+            container = ContainerRegistry.getInstance().findContainers(id=container_id)[
+                0
+            ]
         except IndexError:
             # the container no longer exists
             return
@@ -87,7 +116,9 @@ class ArcWelderPlugin(Extension):
             return
 
         for setting_key in self._settings_dict.keys():
-            setting_definition = SettingDefinition(setting_key, container, category, self._i18n_catalog)
+            setting_definition = SettingDefinition(
+                setting_key, container, category, self._i18n_catalog
+            )
             setting_definition.deserialize(self._settings_dict[setting_key])
 
             # add the setting to the already existing blackmagic settingdefinition
@@ -118,8 +149,9 @@ class ArcWelderPlugin(Extension):
 
             preferences.setValue("arcwelderplugin/settings_made_visible", True)
 
-
-    def _updateAddedChildren(self, container: DefinitionContainer, setting_definition: SettingDefinition) -> None:
+    def _updateAddedChildren(
+        self, container: DefinitionContainer, setting_definition: SettingDefinition
+    ) -> None:
         children = setting_definition.children
         if not children or not setting_definition.parent:
             return
@@ -132,15 +164,13 @@ class ArcWelderPlugin(Extension):
             container._definition_cache[child.key] = child
             self._updateAddedChildren(container, child)
 
-
     def _getAllSettingKeys(self, definition: Dict[str, Any]) -> List[str]:
         children = []
         for key in definition:
             children.append(key)
             if "children" in definition[key]:
-                children.extend(self._getAllSettingKeys(definition[key]))
+                children.extend(self._getAllSettingKeys(definition[key]["children"]))
         return children
-
 
     def _filterGcode(self, output_device):
         scene = self._application.getController().getScene()
@@ -149,22 +179,50 @@ class ArcWelderPlugin(Extension):
         if not global_container_stack:
             return
 
-        arcwelder_enable = global_container_stack.getProperty("arcwelder_enable", "value")
+        arcwelder_enable = global_container_stack.getProperty(
+            "arcwelder_enable", "value"
+        )
         if not arcwelder_enable:
             Logger.log("d", "ArcWelder is not enabled")
             return
 
-        maximum_radius = global_container_stack.getProperty("arcwelder_maximum_radius", "value")
-        path_tolerance = global_container_stack.getProperty("arcwelder_tolerance", "value") / 100
+        maximum_radius = global_container_stack.getProperty(
+            "arcwelder_maximum_radius", "value"
+        )
+        path_tolerance = (
+            global_container_stack.getProperty("arcwelder_tolerance", "value") / 100
+        )
         resolution = global_container_stack.getProperty("arcwelder_resolution", "value")
-        min_arc_segment = int(global_container_stack.getProperty("arcwelder_min_arc_segment", "value"))
-        mm_per_arc_segment = global_container_stack.getProperty("arcwelder_mm_per_arc_segment", "value")
-        allow_3d_arcs = global_container_stack.getProperty("arcwelder_allow_3d_arcs", "value")
-        g90_influences_extruder = global_container_stack.getProperty("arcwelder_g90_influences_extruder", "value")
+        firmware_compensation = global_container_stack.getProperty(
+            "arcwelder_firmware_compensation", "value"
+        )
+        min_arc_segment = int(
+            global_container_stack.getProperty("arcwelder_min_arc_segment", "value")
+        )
+        mm_per_arc_segment = global_container_stack.getProperty(
+            "arcwelder_mm_per_arc_segment", "value"
+        )
+        allow_3d_arcs = global_container_stack.getProperty(
+            "arcwelder_allow_3d_arcs", "value"
+        )
+        allow_dynamic_precision = global_container_stack.getProperty(
+            "arcwelder_allow_dynamic_precision", "value"
+        )
+        default_xyz_precision = int(
+            global_container_stack.getProperty(
+                "arcwelder_default_xyz_precision", "value"
+            )
+        )
+        default_e_precision = int(
+            global_container_stack.getProperty("arcwelder_default_e_precision", "value")
+        )
+        g90_influences_extruder = global_container_stack.getProperty(
+            "arcwelder_g90_influences_extruder", "value"
+        )
 
         # If the scene does not have a gcode, do nothing
         gcode_dict = getattr(scene, "gcode_dict", {})
-        if not gcode_dict: # this also checks for an empty dict
+        if not gcode_dict:  # this also checks for an empty dict
             Logger.log("w", "Scene has no gcode to process")
             return
 
@@ -193,41 +251,57 @@ class ArcWelderPlugin(Extension):
             file_descriptor, temporary_path = tempfile.mkstemp()
             Logger.log("d", "Using temporary file %s", temporary_path)
 
-            with os.fdopen(file_descriptor, 'w', encoding = "utf-8") as temporary_file:
+            with os.fdopen(file_descriptor, "w", encoding="utf-8") as temporary_file:
                 temporary_file.write(joined_gcode)
 
             command_arguments = [
                 self._arcwelder_path,
                 "-m=%f" % maximum_radius,
                 "-t=%f" % path_tolerance,
-                "-r=%f" % resolution,
+                "-r=%f" % resolution
+                #"-x=%d" % default_xyz_precision,
+                #"-e=%d" % default_e_precision,
             ]
 
-            if min_arc_segment>0 :
-                command_arguments.extend([
-                    "-s=%f" % mm_per_arc_segment,
-                    "-a=%d" % min_arc_segment
-                ])
+            if firmware_compensation:
+                command_arguments.extend(
+                    ["-s=%f" % mm_per_arc_segment, "-a=%d" % min_arc_segment]
+                )
 
-            if allow_3d_arcs :
+            if allow_3d_arcs:
                 command_arguments.append("-z")
+
+            if allow_dynamic_precision:
+                command_arguments.append("-d")
 
             if g90_influences_extruder:
                 command_arguments.append("-g")
 
             command_arguments.append(temporary_path)
 
-            Logger.log("d", "Running ArcWelder with the following options: %s" % command_arguments)
-            process_output = subprocess.check_output(command_arguments).decode(locale.getpreferredencoding())
+            Logger.log(
+                "d",
+                "Running ArcWelder with the following options: %s" % command_arguments,
+            )
+
+            if Platform.isWindows():
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            else:
+                startupinfo = None
+            process_output = subprocess.check_output(
+                command_arguments, startupinfo=startupinfo
+            ).decode(locale.getpreferredencoding())
+
             Logger.log("d", process_output)
 
-            with open(temporary_path, "r", encoding = "utf-8") as temporary_file:
+            with open(temporary_path, "r", encoding="utf-8") as temporary_file:
                 result_gcode = temporary_file.read()
             os.remove(temporary_path)
 
             gcode_list = result_gcode.split(layer_separator)
             if header != "":
-                gcode_list.insert(0, header) # add header back in front
+                gcode_list.insert(0, header)  # add header back in front
             gcode_list[0] += processed_marker
             gcode_dict[plate_id] = gcode_list
             dict_changed = True
