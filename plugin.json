@@ -1,7 +1,7 @@
 {
     "name": "Arc Welder plugin",
     "author": "fieldOfView",
-    "version": "3.5.2",
+    "version": "3.5.3-DEV",
     "description": "Reduce stutter by wrapping ArcWelderLib to convert multiple G0/G1 moves to G2/G3 arcs",
     "api": 5,
     "supported_sdk_versions": ["5.0.0", "6.0.0", "7.0.0"]
