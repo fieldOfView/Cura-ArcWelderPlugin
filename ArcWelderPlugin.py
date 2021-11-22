@@ -208,6 +208,9 @@ class ArcWelderPlugin(Extension):
         allow_dynamic_precision = global_container_stack.getProperty(
             "arcwelder_allow_dynamic_precision", "value"
         )
+        allow_travel_arcs = global_container_stack.getProperty(
+            "arcwelder_allow_travel_arcs", "value"
+        )
         default_xyz_precision = int(
             global_container_stack.getProperty(
                 "arcwelder_default_xyz_precision", "value"
@@ -218,6 +221,12 @@ class ArcWelderPlugin(Extension):
         )
         g90_influences_extruder = global_container_stack.getProperty(
             "arcwelder_g90_influences_extruder", "value"
+        )
+        extrusion_rate_variance = (
+            global_container_stack.getProperty("arcwelder_extrusion_rate_variance", "value") / 100
+        )
+        max_gcode_length = int(
+            global_container_stack.getProperty("arcwelder_max_gcode_length", "value")
         )
 
         # If the scene does not have a gcode, do nothing
@@ -258,9 +267,11 @@ class ArcWelderPlugin(Extension):
                 self._arcwelder_path,
                 "-m=%f" % maximum_radius,
                 "-t=%f" % path_tolerance,
-                "-r=%f" % resolution
-                #"-x=%d" % default_xyz_precision,
-                #"-e=%d" % default_e_precision,
+                "-r=%f" % resolution,
+                "-v=%f" % extrusion_rate_variance,
+                "-c=%d" % max_gcode_length
+                # "-x=%d" % default_xyz_precision,
+                # "-e=%d" % default_e_precision,
             ]
 
             if firmware_compensation:
@@ -273,6 +284,9 @@ class ArcWelderPlugin(Extension):
 
             if allow_dynamic_precision:
                 command_arguments.append("-d")
+
+            if allow_travel_arcs:
+                command_arguments.append("-y")
 
             if g90_influences_extruder:
                 command_arguments.append("-g")

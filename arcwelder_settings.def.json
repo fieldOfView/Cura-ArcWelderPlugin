@@ -53,7 +53,7 @@
         "description": "The maximum radius of any arc in mm.",
         "unit": "mm",
         "type": "float",
-        "default_value": 1000000,
+        "default_value": 9999,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
@@ -69,6 +69,16 @@
         "settable_per_extruder": false,
         "settable_per_meshgroup": false,
         "enabled": "arcwelder_enable and magic_spiralize"
+    },
+    "arcwelder_allow_travel_arcs":
+    {
+        "label": "Allow Travel Arcs",
+        "description": "Allow converting travel moves to arcs.",
+        "type": "bool",
+        "default_value": true,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false
     },
     "arcwelder_allow_dynamic_precision":
     {
@@ -147,5 +157,31 @@
                 "enabled": "arcwelder_enable and arcwelder_firmware_compensation"
             }
         }
+    },
+    "arcwelder_extrusion_rate_variance":
+    {
+        "label": "Extrusion Rate Variance",
+        "description": "Abort arc generation if the extrusion rate changes more than the percent specified. This enhances quality and provides support for Cura Arachne engine with variable line width. Enter 0% to disable.",
+        "unit": "%",
+        "type": "float",
+        "default_value": 5,
+        "minimum_value": 0,
+        "maximum_value": 100,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
+    },
+    "arcwelder_max_gcode_length":
+    {
+        "label": "Maximum G-code Length",
+        "description": "Terminate arc generation if the resulting gcode contains more characters than this setting. Some firmware have issues with long gocde commands. Enter 0 for no limit.",
+        "type": "int",
+        "default_value": 0,
+        "minimum_value": 0,
+        "settable_per_mesh": false,
+        "settable_per_extruder": false,
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
     }
 }
