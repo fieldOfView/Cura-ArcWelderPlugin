@@ -268,10 +268,10 @@ class ArcWelderPlugin(Extension):
                 "-m=%f" % maximum_radius,
                 "-t=%f" % path_tolerance,
                 "-r=%f" % resolution,
+                "-x=%d" % default_xyz_precision,
+                "-e=%d" % default_e_precision,
                 "-v=%f" % extrusion_rate_variance,
                 "-c=%d" % max_gcode_length
-                # "-x=%d" % default_xyz_precision,
-                # "-e=%d" % default_e_precision,
             ]
 
             if firmware_compensation:
