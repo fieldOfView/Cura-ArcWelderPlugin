@@ -75,7 +75,7 @@
         "label": "Allow Travel Arcs",
         "description": "Allow converting travel moves to arcs.",
         "type": "bool",
-        "default_value": true,
+        "default_value": false,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
         "settable_per_meshgroup": false

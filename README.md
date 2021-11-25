@@ -34,6 +34,9 @@ Allows you to control the maximum radius arc that will be generated with ArcWeld
 ### Allow 3D Arcs
 This option allows G2/G3 commands to be generated when using vase mode.  This is an experimental option, and it's possible that there are some unknown firmware issues when adding Z coordinates to arc commands.  That being said, I've gotten pretty good results from this option.  At some point, this will be enabled by default.
 
+### Allow Travel Arcs
+This option allows G2/G3 commands to be generated when for travel moves.  In general, most travel moves will not be converted for the average 3D print.  However, for plotters or CNC, or certain slicers that perform wipe actions while retracting, this feature can be useful.  This is an experimental option.
+
 ### Allow Dynamic Precision
 Not all gcode has the same precision for X, Y, and Z parameters.  Enabling this option will cause the precision to grow as ArcWelder encounters gcodes with higher precision.  This may increase gcode size somewhat, depending on the precision of the gcode commands in your file.
 
@@ -57,3 +60,9 @@ This is the default length of a segment in your firmware.  This setting MUST mat
 This specifies the minimum number of segments that a circle of the same radius must have and is the parameter that determines how much compensation will be applied.  This setting was inspired by the Marlin 2.0 arc interpolation algorithm and attempts to follow it as closely as possible.  The higher the value, the more compensation will be applied, and the less compression you will get.  A minimum of 14 is recommended.  Values above 24 are NOT recommended.  In general, this should be set as low as possible.
 
 If ArcWelder detects that a generated arc would have fewer segments than specified, it will reject the arc and output regular G0/G1 codes instead.  It's possible that a single arc will be broken into several G2/G3 commands as well, depending on the exact situation.  Note that ArcWelder will never increase the number of GCodes used, so it is limited by the resolution of the source gcode file.
+
+### Extrusion Rate Variance
+This feature allows ArcWelder to abort an arc if the extrusion rate changes by more than the value set here.  Note that a setting of 0.050 = 5.0%.  This option especially useful for prints using Cura's Arachne engine, but is also useful for regular prints.  Set this value to 0 to disable this feature.
+
+### Maximum Gcode Length
+Some firmware has a problem with long gcode commands, and G2/G3 commands are some of the longest.  You can specify a maximum gcode length to prevent long commands from being generated, which will reduce compression by a tiny amount. Set this value to 0 for no limits.
