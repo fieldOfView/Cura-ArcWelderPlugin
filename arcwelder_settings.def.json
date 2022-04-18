@@ -78,7 +78,8 @@
         "default_value": false,
         "settable_per_mesh": false,
         "settable_per_extruder": false,
-        "settable_per_meshgroup": false
+        "settable_per_meshgroup": false,
+        "enabled": "arcwelder_enable"
     },
     "arcwelder_allow_dynamic_precision":
     {
