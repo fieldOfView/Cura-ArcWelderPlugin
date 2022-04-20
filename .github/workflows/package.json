@@ -1,0 +1,16 @@
+{
+    "author": {
+        "author_id": "fieldofview",
+        "display_name": "fieldOfView",
+        "email": "aldo@fieldofview.com",
+        "website": "http://fieldofview.com"
+    },
+    "description": "Converts multiple subsequent G0/G1 moves to G2/G3 arcs. This reduces the number of gcode commands necessary to make curved movements, thus potentially removing stutter caused by buffer under-runs in the 3d printer controller.\n\nThis plugin uses ArcWelder by @FormerLurker: https://github.com/FormerLurker/ArcWelderLib\n\nThe plugin adds several settings to the "Special Modes" category in Cura. The "Arc Welder" setting needs to be checked to enable ArcWelder processing. See the plugin website for a more thorough description of the settings.\n\nThe development of this plugin can be sponsored via Github Sponsors (https://github.com/sponsors/fieldofview) or Paypal (https://www.paypal.me/fieldofview)",
+    "display_name": "Arc Welder",
+    "package_id": "ArcWelderPlugin",
+    "package_type": "plugin",
+    "package_version": "0.0.0",
+    "sdk_version": 0,
+    "sdk_version_semver": "0.0.0",
+    "website": "https://github.com/fieldOfView/Cura-ArcWelderPlugin"
+}
