@@ -1,0 +1,204 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-25 11:50+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_enable label"
+msgid "Arc Welder"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_enable description"
+msgid "Convert multiple G0/G1 arc segments into G2/G3 arc movements."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_g90_influences_extruder label"
+msgid "G90 Influences Extruder"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_g90_influences_extruder description"
+msgid ""
+"G90/G91 influences the extruder axis mode in the conversion of linear to arc "
+"moves. Marlin 2.0 and forks should have this box checked.  Many forks of "
+"Marlin 1.x should have this unchecked, like the Prusa MK2 and MK3."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_resolution label"
+msgid "Resolution (Maximum Path Deviation)"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_resolution description"
+msgid ""
+"The resolution in mm of the of the output.  Determines the maximum tool path "
+"deviation allowed in the conversion of linear to arc moves."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_tolerance label"
+msgid "Path Tolerance"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_tolerance description"
+msgid ""
+"The maximum allowable difference between the arc path and the original "
+"toolpath in the conversion of linear to arc moves."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_maximum_radius label"
+msgid "Maximum Arc Radius"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_maximum_radius description"
+msgid "The maximum radius of any arc in mm."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_3d_arcs label"
+msgid "Allow 3D Arcs"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_3d_arcs description"
+msgid ""
+"Allow 3d arcs, supporting Spiralize Outer Contour (vase mode). Not all "
+"firmware supports this."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_travel_arcs label"
+msgid "Allow Travel Arcs"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_travel_arcs description"
+msgid "Allow converting travel moves to arcs."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_dynamic_precision label"
+msgid "Allow Dynamic Precision"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_dynamic_precision description"
+msgid ""
+"Allow the precision to grow as ArcWelder encounters gcodes with higher "
+"precision. This may increase gcode size somewhat, depending on the precision "
+"of the gcode commands in your file."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_default_xyz_precision label"
+msgid "Default XYZ Precision"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_default_xyz_precision description"
+msgid ""
+"The number of decimal places of coordinates of arc segments in the X, Y and "
+"Z axes. When combined with the 'Allow Dynamic Precision' setting, this "
+"represents the minimum precision."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_default_e_precision label"
+msgid "Default E Precision"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_default_e_precision description"
+msgid ""
+"The number of decimal places of coordinates of arc segments in the E axis. "
+"When combined with the 'Allow Dynamic Precision' setting, this represents "
+"the minimum precision."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_firmware_compensation label"
+msgid "Firmware Compensation"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_firmware_compensation description"
+msgid ""
+"Some firmware does not handle arcs with a small radius (under approximately "
+"5mm depending on your settings), which will appear flat instead of curved. "
+"If larger arcs appear flat, it's likely that G2/G3 is disabled. This applies "
+"to Marlin 1.x (but NOT Marlin 2), Klipper (can be fixed by changing "
+"settings), and a few others. If you notice small radius arcs that print with "
+"a flat edge, you may need to enable firmware compensation. Note that "
+"compression may be reduced (perhaps drastically) when firmware compensation "
+"is enabled."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_mm_per_arc_segment label"
+msgid "Millimeters Per Arc Segment"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_mm_per_arc_segment description"
+msgid ""
+"The mm per arc segment as defined in your firmware. Used to compensate for "
+"firmware without mini-arc-segments setting."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_min_arc_segment label"
+msgid "Minimum Arc Segments"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_min_arc_segment description"
+msgid ""
+"The minimum number of segments in a full circle of the same radius as any "
+"given arc. Used to compensate for firmware without min-arc-segments setting."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_extrusion_rate_variance label"
+msgid "Extrusion Rate Variance"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_extrusion_rate_variance description"
+msgid ""
+"Abort arc generation if the extrusion rate changes more than the percent "
+"specified. This enhances quality and provides support for Cura Arachne "
+"engine with variable line width. Enter 0% to disable."
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_max_gcode_length label"
+msgid "Maximum G-code Length"
+msgstr ""
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_max_gcode_length description"
+msgid ""
+"Terminate arc generation if the resulting gcode contains more characters "
+"than this setting. Some firmware have issues with long gocde commands. Enter "
+"0 for no limit."
+msgstr ""
