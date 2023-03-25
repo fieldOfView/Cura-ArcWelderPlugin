@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Aldo Hoeben / fieldOfView
+# Copyright (c) 2023 Aldo Hoeben / fieldOfView
 # The ArcWelderPlugin for Cura is released under the terms of the AGPLv3 or higher.
 
 from collections import OrderedDict
@@ -17,6 +17,8 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
 from UM.Platform import Platform
+from UM.i18n import i18nCatalog
+from UM.Resources import Resources
 
 from typing import Dict, List, Any
 
@@ -27,17 +29,27 @@ class ArcWelderPlugin(Extension):
 
         self._application = Application.getInstance()
 
-        self._i18n_catalog = None
+        Resources.addSearchPath(
+            os.path.abspath(os.path.dirname(__file__))
+        )  # Plugin translation file import
+        self._i18n_catalog = i18nCatalog("arcwelderplugin")
 
         settings_definition_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "arcwelder_settings.def.json"
         )
         try:
-            with open(settings_definition_path, "r", encoding="utf-8") as f:
-                self._settings_dict = json.load(f, object_pairs_hook=OrderedDict)
-        except:
+            with open(settings_definition_path, "r", encoding = "utf-8") as f:
+                self._settings_dict = json.load(
+                    f, object_pairs_hook=OrderedDict
+                )["settings"]
+        except Exception:
             Logger.logException("e", "Could not load arc welder settings definition")
             return
+
+        if self._i18n_catalog.hasTranslationLoaded():
+            # Apply translation to loaded dict, because the setting definition model
+            # does not deal well with translations from plugins
+            self._translateSettings(self._settings_dict)
 
         if Platform.isWindows():
             arcwelder_executable = "bin/win64/ArcWelder.exe"
@@ -59,8 +71,8 @@ class ArcWelderPlugin(Extension):
                     | stat.S_IROTH
                     | stat.S_IWUSR,
                 )  # Make sure we have the rights to run this.
-            except:
-                Logger.logException("e", "Could modify rights of ArcWelder executable")
+            except Exception:
+                Logger.logException("e", "Could not modify rights of ArcWelder executable")
                 return
 
         if Platform.isWindows():
@@ -89,15 +101,29 @@ class ArcWelderPlugin(Extension):
             self._filterGcode
         )
 
+    def _translateSettings(self, json_root: Dict[str, Any]) -> None:
+        for key in json_root:
+            json_root[key]["label"] = self._i18n_catalog.i18nc(
+                key + " label", json_root[key]["label"]
+            )
+            json_root[key]["description"] = self._i18n_catalog.i18nc(
+                key + " description", json_root[key]["description"]
+            )
+
+            # TODO: handle options from comboboxes (not that this plugin has any)
+
+            if "children" in json_root[key]:
+                self._translateSettings(json_root[key]["children"])
+
     def _onContainerLoadComplete(self, container_id: str) -> None:
         if not ContainerRegistry.getInstance().isLoaded(container_id):
             # skip containers that could not be loaded, or subsequent findContainers() will cause an infinite loop
             return
 
         try:
-            container = ContainerRegistry.getInstance().findContainers(id=container_id)[
-                0
-            ]
+            container = ContainerRegistry.getInstance().findContainers(
+                id=container_id
+            )[0]
         except IndexError:
             # the container no longer exists
             return
