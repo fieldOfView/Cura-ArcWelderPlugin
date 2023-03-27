@@ -1,0 +1,246 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-25 11:50+0000\n"
+"PO-Revision-Date: 2023-03-27 21:35+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_enable label"
+msgid "Arc Welder"
+msgstr "Arc Welder"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_enable description"
+msgid "Convert multiple G0/G1 arc segments into G2/G3 arc movements."
+msgstr "Converti multipli segmenti d'arco G0/G1 in movimenti d'arco G2/G3."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_g90_influences_extruder label"
+msgid "G90 Influences Extruder"
+msgstr "G90 influenza l'estrusore"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_g90_influences_extruder description"
+msgid ""
+"G90/G91 influences the extruder axis mode in the conversion of linear to arc "
+"moves. Marlin 2.0 and forks should have this box checked.  Many forks of "
+"Marlin 1.x should have this unchecked, like the Prusa MK2 and MK3."
+msgstr ""
+"G90/G91 influenzano la modalità dell'asse estrusore nella conversione da "
+"movimenti lineari ad archi. Marlin 2.0 e derivazioni dovrebbero avere  "
+"questa spunta attivata. Molte derivazioni di Marlin 1.x dovrebbero non "
+"averla spuntata, come Prusa MK2 e MK3."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_resolution label"
+msgid "Resolution (Maximum Path Deviation)"
+msgstr "Risoluzione (Massima deviazione dal percorso)"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_resolution description"
+msgid ""
+"The resolution in mm of the of the output.  Determines the maximum tool path "
+"deviation allowed in the conversion of linear to arc moves."
+msgstr ""
+"La risoluzione in mm del risultato. Determina la deviazione massima dal "
+"percorso nella conversione da movimenti lineari ad archi."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_tolerance label"
+msgid "Path Tolerance"
+msgstr "Tolleranza del percorso"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_tolerance description"
+msgid ""
+"The maximum allowable difference between the arc path and the original "
+"toolpath in the conversion of linear to arc moves."
+msgstr ""
+"La massima differenza permessa tra percorso dell'arco e percorso originale "
+"nella conversione da movimenti lineari ad archi."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_maximum_radius label"
+msgid "Maximum Arc Radius"
+msgstr "Massimo raggio dell'arco"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_maximum_radius description"
+msgid "The maximum radius of any arc in mm."
+msgstr "Raggio massimo dell'arco in mm."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_3d_arcs label"
+msgid "Allow 3D Arcs"
+msgstr "Permetti archi 3D"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_3d_arcs description"
+msgid ""
+"Allow 3d arcs, supporting Spiralize Outer Contour (vase mode). Not all "
+"firmware supports this."
+msgstr ""
+"Permetti archi 3D, supporta il contorno spiralizzato (modalità vaso). Non "
+"tutti i firmware lo supportano."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_travel_arcs label"
+msgid "Allow Travel Arcs"
+msgstr "Permetti spostamenti ad arco"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_travel_arcs description"
+msgid "Allow converting travel moves to arcs."
+msgstr "Permetti di convertire in archi i movimenti di spostamento"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_dynamic_precision label"
+msgid "Allow Dynamic Precision"
+msgstr "Permetti precisione dinamica"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_allow_dynamic_precision description"
+msgid ""
+"Allow the precision to grow as ArcWelder encounters gcodes with higher "
+"precision. This may increase gcode size somewhat, depending on the precision "
+"of the gcode commands in your file."
+msgstr ""
+"Permetti di aumentare la precisione quando ArcWelder incontra gcodes con "
+"precisione maggiore. Questo può incrementare in qualche modo lo spazio "
+"occupato dal gcode, a seconda della precisione dei comandi nel tuo file "
+"gcode."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_default_xyz_precision label"
+msgid "Default XYZ Precision"
+msgstr "Precisione XYZ predefinita"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_default_xyz_precision description"
+msgid ""
+"The number of decimal places of coordinates of arc segments in the X, Y and "
+"Z axes. When combined with the 'Allow Dynamic Precision' setting, this "
+"represents the minimum precision."
+msgstr ""
+"Il numero di cifre decimali delle coordinate dei segmenti d'arco sugli assi "
+"X, Y e Z. Quando combinato con l'impostazione 'Permetti precisione "
+"dinamica', questo rappresenta la precisione minima."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_default_e_precision label"
+msgid "Default E Precision"
+msgstr "Precisione predefinita di E"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_default_e_precision description"
+msgid ""
+"The number of decimal places of coordinates of arc segments in the E axis. "
+"When combined with the 'Allow Dynamic Precision' setting, this represents "
+"the minimum precision."
+msgstr ""
+"Il numero di cifre decimali delle coordinate dei segmenti d'arco sull'asse "
+"E. Quando combinato con l'impostazione 'Permetti precisione dinamica', "
+"questo rappresenta la precisione minima."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_firmware_compensation label"
+msgid "Firmware Compensation"
+msgstr "Compensazione del firmware"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_firmware_compensation description"
+msgid ""
+"Some firmware does not handle arcs with a small radius (under approximately "
+"5mm depending on your settings), which will appear flat instead of curved. "
+"If larger arcs appear flat, it's likely that G2/G3 is disabled. This applies "
+"to Marlin 1.x (but NOT Marlin 2), Klipper (can be fixed by changing "
+"settings), and a few others. If you notice small radius arcs that print with "
+"a flat edge, you may need to enable firmware compensation. Note that "
+"compression may be reduced (perhaps drastically) when firmware compensation "
+"is enabled."
+msgstr ""
+"Alcuni firmware non gestiscono archi con raggio piccolo (inferiori ad circa "
+"5mm a seconda delle tue impostazioni), questi appariranno piatti invece che "
+"curvi. Se gli archi più grandi appaiono piatti, allora quasi certamente G2/"
+"G3 sono disabilitati. Questo si applica a Marlin 1.x (ma NON a Marlin 2), "
+"Klipper (può essere sistemato cambiando le impostazioni), e pochi altri. Se "
+"noti che archi dal raggio piccolo vengono stampati con un bordo piatto, "
+"potresti dover abilitare la compensazione firmware. Nota che la compressione "
+"può essere ridotta (forse drasticamente) quando la compensazione firmware è "
+"abilitata."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_mm_per_arc_segment label"
+msgid "Millimeters Per Arc Segment"
+msgstr "Millimetri per segmento d'arco"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_mm_per_arc_segment description"
+msgid ""
+"The mm per arc segment as defined in your firmware. Used to compensate for "
+"firmware without mini-arc-segments setting."
+msgstr ""
+"I mm per segmento d'arco cosi come definiti nel tuo firmware. Usato per "
+"compensare firmware sprovvisti di impostazione per mini-segmenti-d'arco."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_min_arc_segment label"
+msgid "Minimum Arc Segments"
+msgstr "Segmenti minimi dell'arco"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_min_arc_segment description"
+msgid ""
+"The minimum number of segments in a full circle of the same radius as any "
+"given arc. Used to compensate for firmware without min-arc-segments setting."
+msgstr ""
+"Il numero minimo di segmenti in un cerchio completo dello stesso raggio di "
+"un dato arco. Usato per compensare firmware sprovvisti di impostazione per "
+"mini-segmenti-d'arco."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_extrusion_rate_variance label"
+msgid "Extrusion Rate Variance"
+msgstr "Variazione della velocità di estrusione"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_extrusion_rate_variance description"
+msgid ""
+"Abort arc generation if the extrusion rate changes more than the percent "
+"specified. This enhances quality and provides support for Cura Arachne "
+"engine with variable line width. Enter 0% to disable."
+msgstr ""
+"Annulla la generazione dell'arco se la velocità di estrusione varia più "
+"della percentuale specificata. Questo migliora la qualità e fornisce "
+"supporto per il motore Cura Arachne con larghezza di linea variabile. "
+"Inserisci 0% per disabilitare."
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_max_gcode_length label"
+msgid "Maximum G-code Length"
+msgstr "Massima lunghezza del G-code"
+
+#: arcwelder_settings.def.json
+msgctxt "arcwelder_max_gcode_length description"
+msgid ""
+"Terminate arc generation if the resulting gcode contains more characters "
+"than this setting. Some firmware have issues with long gocde commands. Enter "
+"0 for no limit."
+msgstr ""
+"Termina la generazione dell'arco se il gcode risultante contiene più "
+"caratteri di questa impostazione. Alcuni firmware hanno problemi con comandi "
+"gcode lunghi. Inserire 0 per non avere limiti."
